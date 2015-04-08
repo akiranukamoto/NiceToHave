@@ -1,0 +1,67 @@
+Diretiva de intervalo de datas.
+
+- Casos de uso:
+ - atributos:
+  - inicial | "a data inicial do intervalo" | = | atributo obrigatório
+  - final | "a data final do intervalo" | = | atributo obrigatório
+  - limite-inicial | "a data limite inicial do intervalo" | & | atributo obrigatório
+  - limite-final | "a data limite final do intervalo" | & | atributo obrigatório
+  - passo | "o passo que o intervalo será alterado conforme as datas são alteradas" | & | default 1 dia 
+  - acao | "Acao que será executada conforme os ranges são alterado" | & | atributo opcional
+  - mascara | "Máscara de data" | & | default DD/MM/YYYY
+  
+--
+  
+DADO QUE atribui inicial "10/05/2015", final "22/06/2015", limite-inicial "10/04/2015" e limite-final "22/08/2015"
+QUANDO é renderizado a diretiva
+ENTÃO deve mostrar um componente que tenha um intervalo de datas limites de "10/04/2015" até "22/08/2015"
+ENTÃO deve mostrar um componente que tenha marcado um subintervalo de datas de "10/05/2015" até "22/06/2015",
+  com ação em sua extremidas e central.
+
+--
+
+DADO QUE atribui inicial "10/05/2015", final "22/06/2015", limite-inicial "10/04/2015" e limite-final "22/08/2015"
+QUANDO movido a data inicial para esquerda (1 passo)
+ENTÃO deve alterar o valor da data inicial para 09/05/2015
+QUANDO movido a data inicial para direita (1 passo)
+ENTÃO deve alterar o valor da data inicial para 10/05/2015
+
+--
+
+DADO QUE atribui inicial "10/05/2015", final "22/06/2015", limite-inicial "10/05/2015" e limite-final "22/08/2015"
+QUANDO movido a data inicial para esquerda (1 passo)
+ENTÃO deve manter o valor da data inicial de 10/05/2015
+QUANDO movido a data inicial para direita (10 passo)
+ENTÃO deve manter o valor da data inicial de 20/05/2015
+
+--
+
+DADO QUE atribui inicial "10/05/2015", final "22/06/2015", limite-inicial "10/04/2015" e limite-final "22/08/2015"
+QUANDO movido a data final para direita (1 passo)
+ENTÃO deve alterar o valor da data inicial para 23/06/2015
+QUANDO movido a data final para esquerda (1 passo)
+ENTÃO deve alterar o valor da data inicial para 22/06/2015
+
+--
+
+DADO QUE atribui inicial "10/05/2015", final "22/08/2015", limite-inicial "10/04/2015" e limite-final "22/08/2015"
+QUANDO movido a data final para direita (1 passo)
+ENTÃO deve manter o valor da data final de 22/08/2015
+QUANDO movido a data final para esquerda (1 passo)
+ENTÃO deve alterar o valor da data inicial para 21/08/2015
+
+--
+
+DADO QUE atribui inicial "10/05/2015", final "22/08/2015", limite-inicial "10/04/2015" e limite-final "22/08/2015"
+QUANDO movido o intervalo para direita (1 passo)
+ENTÃO deve manter o valor da data inicial de 10/05/2015 e final de 22/08/2015
+QUANDO movido o intervalo para esquerda (1 passo)
+ENTÃO deve alterar o valor da data inicial para 09/05/2015 e final para 21/08/2015
+
+--
+
+TODO: casos de uso com erro, o que fazer?
+ - inicial menor que o limite-inicial
+ - final maior que o limite-final
+ - inicial > final
+ - limite-inicial > limite-final
